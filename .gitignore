@@ -1,6 +1,9 @@
 # Build folder
 /cmake-build-debug
 
+# IDE folder
+/.idea
+
 # Prerequisites
 *.d
 
