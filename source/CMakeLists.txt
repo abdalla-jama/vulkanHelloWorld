@@ -1,2 +1,2 @@
-add_executable(vulkanBase main.cpp)
-target_link_libraries (vulkanBase -lvulkan)
+add_executable(vulkanHelloWorld main.cpp Instance.cpp Instance.hpp)
+target_link_libraries (vulkanHelloWorld -lvulkan)
