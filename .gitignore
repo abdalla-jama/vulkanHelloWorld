@@ -4,6 +4,10 @@
 # IDE folder
 /.idea
 
+# Doxygen folders
+/html
+/latex
+
 # Prerequisites
 *.d
 

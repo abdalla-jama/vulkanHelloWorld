@@ -1,5 +1,5 @@
 add_executable(vulkanHelloWorld
         main.cpp
-        Instance.cpp
-        Instance.h)
+        DeviceInstance.cpp
+        DeviceInstance.h)
 target_link_libraries (vulkanHelloWorld -lvulkan)
