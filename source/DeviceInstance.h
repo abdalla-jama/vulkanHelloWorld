@@ -15,17 +15,16 @@
 
 class DeviceInstance {
  public:
+  void fillApplicationInfo(VkApplicationInfo*);
+  void fillCreateInfo(VkInstanceCreateInfo*);
   void createInstance();
-  ~DeviceInstance();
+  void destroyInstance();
   const VkApplicationInfo* getApplicationInfo() const {return &app_info_;}
   VkResult getInstanceStatus() const {return instance_status_;}
  private:
   VkApplicationInfo app_info_{};
   VkInstanceCreateInfo create_info_{};
-  VkInstance instance_{};
+  VkInstance instance_{VK_NULL_HANDLE};
   VkResult instance_status_{VK_NOT_READY};
-  void fillApplicationInfo();
-  void fillCreateInfo();
-  void destroyInstance();
 };
 #endif //VULKANHELLOWORLD_SOURCE_DEVICEINSTANCE_H_
