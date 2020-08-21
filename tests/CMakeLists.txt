@@ -4,6 +4,6 @@ include_directories (${Boost_INCLUDE_DIRS})
 
 add_executable (tests_all
         mainTest.cpp
-        ../source/DeviceInstance.cpp
-        DeviceInstanceUnitTests.cpp)
+        ../source/Instance.cpp
+        InstanceUnitTests.cpp)
 target_link_libraries (tests_all ${Boost_LIBRARIES} -lvulkan)

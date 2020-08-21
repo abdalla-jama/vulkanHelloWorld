@@ -1,8 +1,8 @@
 #include <boost/test/unit_test.hpp>
-#include "../source/DeviceInstance.h"
+#include "../source/Instance.h"
 
 BOOST_AUTO_TEST_CASE(fillApplicationInfo) {
-    DeviceInstance testInstance;
+    Instance testInstance;
     VkApplicationInfo fakeInfo = {
 		VK_STRUCTURE_TYPE_APPLICATION_INFO,
 		nullptr,
