@@ -1,4 +1,4 @@
-//===-Instance.h----------------------------------------------*- C++ -*-//
+//===-Instance.h----------------------------------------------------*- C++ -*-//
 //
 // Part of vulkanHelloWorld, under the MIT License 
 // Copyright (c) 2020 Abdalla Jama
@@ -15,9 +15,9 @@
 
 class Instance {
  public:
-  void fillApplicationInfo(VkApplicationInfo*);
+  void fillApplicationInfo(VkApplicationInfo* vk = nullptr);
   void fillCreateInfo(VkInstanceCreateInfo*);
-  void createInstance();
+  VkResult createInstance();
   void destroyInstance();
   const VkApplicationInfo* getApplicationInfo() const {return &app_info_;}
   const VkInstanceCreateInfo* getCreateInfo() const {return &create_info_;}

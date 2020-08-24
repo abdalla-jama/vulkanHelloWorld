@@ -1,4 +1,4 @@
-//===-Instance.cpp--------------------------------------------*- C++ -*-//
+//===-Instance.cpp--------------------------------------------------*- C++ -*-//
 //
 // Part of vulkanHelloWorld, under the MIT License 
 // Copyright (c) 2020 Abdalla Jama
@@ -11,7 +11,7 @@
 
 #include "Instance.h"
 
-void Instance::fillApplicationInfo(VkApplicationInfo* vk = nullptr) {
+void Instance::fillApplicationInfo(VkApplicationInfo* vk) {
   if (vk == nullptr) {
 	app_info_ = {
 		VK_STRUCTURE_TYPE_APPLICATION_INFO,
@@ -42,11 +42,12 @@ void Instance::fillCreateInfo(VkInstanceCreateInfo* vk = nullptr) {
     create_info_ = *vk;
   }
 }
-void Instance::createInstance() {
+VkResult Instance::createInstance() {
   VkResult result = vkCreateInstance(
   	&create_info_,
   	nullptr, &instance_);
   instance_status_ = result;
+  return result;
 }
 void Instance::destroyInstance() {
   vkDestroyInstance(instance_, nullptr);
