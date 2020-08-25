@@ -26,7 +26,7 @@ void Instance::fillApplicationInfo(VkApplicationInfo* vk) {
     app_info_ = *vk;
   }
 }
-void Instance::fillCreateInfo(VkInstanceCreateInfo* vk = nullptr) {
+void Instance::fillCreateInfo(VkInstanceCreateInfo* vk) {
   if (vk == nullptr) {
 	create_info_ = {
 		VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,

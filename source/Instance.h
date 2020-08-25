@@ -16,11 +16,9 @@
 class Instance {
  public:
   void fillApplicationInfo(VkApplicationInfo* vk = nullptr);
-  void fillCreateInfo(VkInstanceCreateInfo*);
+  void fillCreateInfo(VkInstanceCreateInfo* vk = nullptr);
   VkResult createInstance();
   void destroyInstance();
-  const VkApplicationInfo* getApplicationInfo() const {return &app_info_;}
-  const VkInstanceCreateInfo* getCreateInfo() const {return &create_info_;}
   VkResult getInstanceStatus() const {return instance_status_;}
  private:
   VkApplicationInfo app_info_{};
