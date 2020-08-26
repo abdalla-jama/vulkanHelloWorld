@@ -1,16 +1,18 @@
 //===-Instance.cpp--------------------------------------------------*- C++ -*-//
 //
-// Part of vulkanHelloWorld, under the MIT License 
-// Copyright (c) 2020 Abdalla Jama
+// Part of the vulkanHelloWorld project, under the MIT License.
+// Copyright (c) 2020 Abdalla Jama.
+// This file contains the implementation of the Instance class.
 //
 //===----------------------------------------------------------------------===//
-//
-// Implementation of Instance
-//
-//===----------------------------------------------------------------------===//
-
 #include "Instance.h"
 
+/// \brief This function initializes the app_info_ variable by populating a
+/// VkApplicationInfo struct.
+/// \details A VkApplicationInfo struct is passed in and filled with a default
+/// set of values or with the values provided by vk. The struct is assigned to
+/// app_info_
+/// \param vk (default nullptr) A pointer to a VkApplicationInfo struct.
 void Instance::fillApplicationInfo(VkApplicationInfo* vk) {
   if (vk == nullptr) {
 	app_info_ = {
@@ -26,6 +28,12 @@ void Instance::fillApplicationInfo(VkApplicationInfo* vk) {
     app_info_ = *vk;
   }
 }
+/// \brief This function initializes the create_info_ variable by populating a
+/// VkInstanceCreateInfo struct.
+/// \details A VkInstanceCreateInfo struct is passed in and filled with a
+/// default set of values or with the values provided by vk. The struct is assigned to
+/// create_info_
+/// \param vk (default nullptr) A pointer to a VkInstanceCreateInfo struct.
 void Instance::fillCreateInfo(VkInstanceCreateInfo* vk) {
   if (vk == nullptr) {
 	create_info_ = {

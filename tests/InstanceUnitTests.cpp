@@ -1,15 +1,12 @@
 //===-InstanceUnitTests.cpp-----------------------------------------*- C++ -*-//
 //
-// Part of vulkanHelloWorld, under the MIT License
-// Copyright (c) 2020 Abdalla Jama
+// Part of the vulkanHelloWorld project, under the MIT License.
+// Copyright (c) 2020 Abdalla Jama.
+// This file contains the unit tests for the Instance class.
 //
 //===----------------------------------------------------------------------===//
-//
-// This file contains the unit tests for the Instance class
-//
-//===----------------------------------------------------------------------===//
-
 #include <boost/test/unit_test.hpp>
+/// \warning macro "#define private public" used for testing purposes only
 #define private public
 #include "../source/Instance.h"
 
