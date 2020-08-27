@@ -10,17 +10,23 @@
 #include <vulkan/vulkan.h>
 
 /// \class Instance "Instance.h"
-/// \brief This class represents the vulkan instance (VkInstance)
-/// \details The class initializes a VkInstance to a null handle. Additionally
-/// it provides all the methods needed to create a valid VkInstance. The
-/// VkInstance can also be accessed through a getter.
+/// \brief Instance - Represents the vulkan instance (VkInstance).
+/// \details Instance initializes a VkInstance object to a null handle.
+/// Additionally it provides all the methods needed to create, access and query
+/// the status of a valid VkInstance.
 class Instance {
  public:
-  void fillApplicationInfo(VkApplicationInfo* vk = nullptr);
-  void fillCreateInfo(VkInstanceCreateInfo* vk = nullptr);
+  void setApplicationInfo(VkApplicationInfo* vk = nullptr);
+  void setCreateInfo(VkInstanceCreateInfo* vk = nullptr);
   VkResult createInstance();
   void destroyInstance();
-  //TODO getter function for instance_
+/// \brief getVkInstance - Provides access to the member VkInstance through an
+/// immutable pointer.
+/// \return const VkInstance*
+  const VkInstance* getVkInstance() const {return &instance_;}
+/// \brief getInstanceStatus - Provides the status of the member VkInstance
+/// object handle.
+/// \return VkResult - An enumeration of vulkan command return codes.
   VkResult getInstanceStatus() const {return instance_status_;}
  private:
   VkApplicationInfo app_info_{};

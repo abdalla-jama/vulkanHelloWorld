@@ -10,9 +10,9 @@
 #define private public
 #include "../source/Instance.h"
 
-BOOST_AUTO_TEST_CASE(fillApplicationInfo_noParameters) {
+BOOST_AUTO_TEST_CASE(setApplicationInfo_noParameters) {
   Instance test_instance;
-  test_instance.fillApplicationInfo();
+  test_instance.setApplicationInfo();
   VkApplicationInfo* test_info = &test_instance.app_info_;
   BOOST_CHECK_EQUAL(test_info->sType, VK_STRUCTURE_TYPE_APPLICATION_INFO);
   BOOST_CHECK_EQUAL(test_info->pNext, nullptr);
@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(fillApplicationInfo_noParameters) {
 					VK_MAKE_VERSION(1, 0, 0));
   BOOST_CHECK_EQUAL(test_info->apiVersion, VK_API_VERSION_1_0);
 }
-BOOST_AUTO_TEST_CASE(fillApplicationInfo_withParameters) {
+BOOST_AUTO_TEST_CASE(setApplicationInfo_withParameters) {
   Instance test_instance;
   VkApplicationInfo test_info = {
 	  VK_STRUCTURE_TYPE_APPLICATION_INFO,
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(fillApplicationInfo_withParameters) {
 	  VK_MAKE_VERSION(2, 0, 0),
 	  VK_API_VERSION_1_0
   };
-  test_instance.fillApplicationInfo(&test_info);
+  test_instance.setApplicationInfo(&test_info);
   BOOST_CHECK_EQUAL(test_instance.app_info_.sType, test_info.sType);
   BOOST_CHECK_EQUAL(test_instance.app_info_.pNext, test_info.pNext);
   BOOST_CHECK_EQUAL(test_instance.app_info_.pApplicationName,
@@ -49,9 +49,9 @@ BOOST_AUTO_TEST_CASE(fillApplicationInfo_withParameters) {
   BOOST_CHECK_EQUAL(test_instance.app_info_.apiVersion,
 					test_info.apiVersion);
 }
-BOOST_AUTO_TEST_CASE(fillCreateInfo_noParameters) {
+BOOST_AUTO_TEST_CASE(setCreateInfo_noParameters) {
   Instance test_instance;
-  test_instance.fillCreateInfo();
+  test_instance.setCreateInfo();
   VkInstanceCreateInfo* test_info = &test_instance.create_info_;
   BOOST_CHECK_EQUAL(test_info->sType, VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO);
   BOOST_CHECK_EQUAL(test_info->pNext, nullptr);
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(fillCreateInfo_noParameters) {
   BOOST_CHECK_EQUAL(test_info->enabledExtensionCount, 0);
   BOOST_CHECK_EQUAL(test_info->ppEnabledExtensionNames, nullptr);
 }
-BOOST_AUTO_TEST_CASE(fillCreateInfo_withParameters) {
+BOOST_AUTO_TEST_CASE(setCreateInfo_withParameters) {
   Instance test_instance;
   VkInstanceCreateInfo test_info = {
 	  VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(fillCreateInfo_withParameters) {
 	  5,
 	  nullptr
   };
-  test_instance.fillCreateInfo(&test_info);
+  test_instance.setCreateInfo(&test_info);
   BOOST_CHECK_EQUAL(test_instance.create_info_.sType, test_info.sType);
   BOOST_CHECK_EQUAL(test_instance.create_info_.pNext, test_info.pNext);
   BOOST_CHECK_EQUAL(test_instance.create_info_.flags, test_info.flags);
@@ -88,4 +88,25 @@ BOOST_AUTO_TEST_CASE(fillCreateInfo_withParameters) {
 					test_info.enabledExtensionCount);
   BOOST_CHECK_EQUAL(test_instance.create_info_.ppEnabledExtensionNames,
 					test_info.ppEnabledExtensionNames);
+}
+BOOST_AUTO_TEST_CASE(createInstance_validInstance) {
+  Instance test_instance;
+  BOOST_CHECK_EQUAL(test_instance.createInstance(), VK_SUCCESS);
+}
+BOOST_AUTO_TEST_CASE(destroyInstance_validInstance) {
+  Instance test_instance;
+  test_instance.createInstance();
+  BOOST_CHECK_EQUAL(test_instance.instance_status_, VK_SUCCESS);
+  test_instance.destroyInstance();
+  BOOST_CHECK_EQUAL(test_instance.instance_status_, VK_NOT_READY);
+}
+BOOST_AUTO_TEST_CASE(getVkInstance) {
+  Instance test_instance;
+  BOOST_CHECK_EQUAL(*test_instance.getVkInstance(),
+					test_instance.instance_);
+}
+BOOST_AUTO_TEST_CASE(getInstanceStatus) {
+  Instance test_instance;
+  BOOST_CHECK_EQUAL(test_instance.getInstanceStatus(),
+					test_instance.instance_status_);
 }

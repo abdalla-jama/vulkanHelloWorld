@@ -7,13 +7,13 @@
 //===----------------------------------------------------------------------===//
 #include "Instance.h"
 
-/// \brief This function initializes the app_info_ variable by populating a
+/// \brief setApplicationInfo - Initializes and populates the member
 /// VkApplicationInfo struct.
-/// \details A VkApplicationInfo struct is passed in and filled with a default
-/// set of values or with the values provided by vk. The struct is assigned to
-/// app_info_
+/// \details A VkApplicationInfo struct may be passed in to the function in
+/// which case it is assigned to the member VkApplicationInfo struct, otherwise
+/// a default set of values populates the struct.
 /// \param vk (default nullptr) A pointer to a VkApplicationInfo struct.
-void Instance::fillApplicationInfo(VkApplicationInfo* vk) {
+void Instance::setApplicationInfo(VkApplicationInfo* vk) {
   if (vk == nullptr) {
 	app_info_ = {
 		VK_STRUCTURE_TYPE_APPLICATION_INFO,
@@ -28,13 +28,13 @@ void Instance::fillApplicationInfo(VkApplicationInfo* vk) {
     app_info_ = *vk;
   }
 }
-/// \brief This function initializes the create_info_ variable by populating a
+/// \brief setCreateInfo - Initializes and populates the member
 /// VkInstanceCreateInfo struct.
-/// \details A VkInstanceCreateInfo struct is passed in and filled with a
-/// default set of values or with the values provided by vk. The struct is assigned to
-/// create_info_
+/// \details A VkInstanceCreateInfo struct may be passed in to the function in
+/// which case it is assigned to the member VkApplicationInfo struct, otherwise
+/// a default set of values populates the struct.
 /// \param vk (default nullptr) A pointer to a VkInstanceCreateInfo struct.
-void Instance::fillCreateInfo(VkInstanceCreateInfo* vk) {
+void Instance::setCreateInfo(VkInstanceCreateInfo* vk) {
   if (vk == nullptr) {
 	create_info_ = {
 		VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
@@ -50,6 +50,12 @@ void Instance::fillCreateInfo(VkInstanceCreateInfo* vk) {
     create_info_ = *vk;
   }
 }
+/// \brief createInstance - Creates a new vulkan instance.
+/// \details Functions as a thin wrapper for the analogous vulkan API function
+/// vkCreateInstance, passing in member variables for VkApplicationInfo,
+/// VkInstanceCreateInfo and the VkInstance. The instance status member is
+/// updated as well. A successful call will return VK_SUCCESS.
+/// \return VkResult - An enumeration of vulkan command return codes.
 VkResult Instance::createInstance() {
   VkResult result = vkCreateInstance(
   	&create_info_,
@@ -57,6 +63,11 @@ VkResult Instance::createInstance() {
   instance_status_ = result;
   return result;
 }
+/// \brief destroyInstance - Destroys a vulkan instance.
+/// \details Functions as a thin wrapper for the analogous vulkan API function
+/// vkDestroyInstance with the member VkInstance passed in. Additionally the
+/// instance status is updated as well.
 void Instance::destroyInstance() {
   vkDestroyInstance(instance_, nullptr);
+  instance_status_ = VK_NOT_READY;
 }
