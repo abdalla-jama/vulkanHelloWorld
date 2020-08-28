@@ -56,10 +56,14 @@ void Instance::setCreateInfo(VkInstanceCreateInfo* vk) {
 /// VkInstanceCreateInfo and the VkInstance. The instance status member is
 /// updated as well. A successful call will return VK_SUCCESS.
 /// \return VkResult - An enumeration of vulkan command return codes.
+/// \exception std::runtime_error thrown if VK_SUCCESS not returned.
 VkResult Instance::createInstance() {
   VkResult result = vkCreateInstance(
   	&create_info_,
   	nullptr, &instance_);
+  if (result) {
+	throw std::runtime_error("Failed attempt to create valid VkInstance");
+  }
   instance_status_ = result;
   return result;
 }

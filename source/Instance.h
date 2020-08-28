@@ -8,6 +8,7 @@
 #ifndef VULKANHELLOWORLD_SOURCE_INSTANCE_H_
 #define VULKANHELLOWORLD_SOURCE_INSTANCE_H_
 #include <vulkan/vulkan.h>
+#include <stdexcept>
 
 /// \class Instance "Instance.h"
 /// \brief Instance - Represents the vulkan instance (VkInstance).
