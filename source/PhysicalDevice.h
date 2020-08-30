@@ -15,11 +15,17 @@
 /// \brief This class 
 class PhysicalDevice {
  public:
-  VkResult catalogPhysicalDevices(VkInstance instance);
+  VkResult enumeratePhysicalDevices(VkInstance instance);
+  void selectPhysicalDevice();
+  const std::vector<VkPhysicalDevice>* getPhysicalDevices() const
+  {return &device_array_;}
+  const VkPhysicalDevice* getSelectedPhysicalDevice() const
+  {return &selected_device_;}
 
  private:
   VkPhysicalDevice selected_device_{VK_NULL_HANDLE};
   std::vector<VkPhysicalDevice> device_array_{};
-
+  bool APIVersionCheck(VkPhysicalDevice physical_device);
+  bool isGraphicsSupported(VkPhysicalDevice physical_device);
 };
 #endif //VULKANHELLOWORLD_SOURCE_PHYSICALDEVICE_H_

@@ -16,13 +16,13 @@ BOOST_AUTO_TEST_CASE(catalogPhysicalDevices_validInstance) {
   test_instance.createInstance();
   PhysicalDevice test_device;
   const VkInstance* instance = test_instance.getVkInstance();
-  BOOST_CHECK_EQUAL(test_device.catalogPhysicalDevices(*instance),
+  BOOST_CHECK_EQUAL(test_device.enumeratePhysicalDevices(*instance),
 					VK_SUCCESS);
   BOOST_CHECK(!test_device.device_array_.empty());
 }
-BOOST_AUTO_TEST_CASE(catalogPhysicalDevices_invalidInstance) {
+BOOST_AUTO_TEST_CASE(catalogPhysicalDevices_invalidInstance_exceptionThrown) {
   PhysicalDevice test_device;
   VkInstance instance = VK_NULL_HANDLE;
-  BOOST_CHECK_THROW(test_device.catalogPhysicalDevices(instance),
+  BOOST_CHECK_THROW(test_device.enumeratePhysicalDevices(instance),
 					std::runtime_error);
 }

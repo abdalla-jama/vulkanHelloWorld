@@ -93,9 +93,6 @@ BOOST_AUTO_TEST_CASE(createInstance_validInstance) {
   Instance test_instance;
   BOOST_CHECK_EQUAL(test_instance.createInstance(), VK_SUCCESS);
 }
-BOOST_AUTO_TEST_CASE(createInstance_invalidInstance_exceptionThrown) {
-  //TODO figure out how to test for this exception
-}
 BOOST_AUTO_TEST_CASE(destroyInstance_validInstance) {
   Instance test_instance;
   test_instance.createInstance();

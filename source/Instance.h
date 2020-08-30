@@ -14,7 +14,11 @@
 /// \brief Instance - Represents the vulkan instance (VkInstance).
 /// \details Instance initializes a VkInstance object to a null handle.
 /// Additionally it provides all the methods needed to create, access and query
-/// the status of a valid VkInstance.
+/// the status of a valid VkInstance. A valid VkInstance object initializes the
+/// vulkan library and allows communication between the application and the
+/// vulkan implementation. For more information on the VkInstance see the vulkan
+/// specification at
+/// https://www.khronos.org/registry/vulkan/specs/1.2-extensions/html/vkspec.html#VkInstance
 class Instance {
  public:
   void setApplicationInfo(VkApplicationInfo* vk = nullptr);
@@ -23,7 +27,7 @@ class Instance {
   void destroyInstance();
 /// \brief getVkInstance - Provides access to the member VkInstance through an
 /// immutable pointer.
-/// \return const VkInstance*
+/// \return const VkInstance* - an immutable pointer to the VkInstance
   const VkInstance* getVkInstance() const {return &instance_;}
 /// \brief getInstanceStatus - Provides the status of the member VkInstance
 /// object handle.
