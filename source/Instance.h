@@ -1,8 +1,9 @@
 //===-Instance.h----------------------------------------------------*- C++ -*-//
 //
-// Part of the vulkanHelloWorld project, under the MIT License.
-// Copyright (c) 2020 Abdalla Jama.
-// This file contains the definition of the Instance class.
+/// Part of the vulkanHelloWorldApp.
+/// This file contains the definition of the Instance class.
+/// \copyright Copyright (c) 2020 Abdalla Jama under the MIT License. See
+/// accompanying file LICENSE or copy at https://opensource.org/licenses/MIT
 //
 //===----------------------------------------------------------------------===//
 #ifndef VULKANHELLOWORLD_SOURCE_INSTANCE_H_
@@ -10,7 +11,7 @@
 #include <vulkan/vulkan.h>
 #include <stdexcept>
 
-/// \class Instance "Instance.h"
+/// \class Instance Instance.h "Instance.h"
 /// \brief Instance - Represents the vulkan instance (VkInstance).
 /// \details Instance initializes a VkInstance object to a null handle.
 /// Additionally it provides all the methods needed to create, access and query
@@ -33,6 +34,11 @@ class Instance {
 /// object handle.
 /// \return VkResult - An enumeration of vulkan command return codes.
   VkResult getInstanceStatus() const {return instance_status_;}
+/// \brief getAPIVersion - Provides vulkan API version being used by the
+/// application.
+/// \return uint32_t - Signed integer with 32 bit width representing the major,
+/// minor and patch numbers of the vulkan API.
+  uint32_t getAPIVersion() const {return app_info_.apiVersion;}
  private:
   VkApplicationInfo app_info_{};
   VkInstanceCreateInfo create_info_{};

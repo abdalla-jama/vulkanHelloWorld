@@ -1,8 +1,9 @@
 //===-Instance.cpp--------------------------------------------------*- C++ -*-//
 //
-// Part of the vulkanHelloWorld project, under the MIT License.
-// Copyright (c) 2020 Abdalla Jama.
-// This file contains the implementation of the Instance class.
+/// Part of the vulkanHelloWorldApp.
+/// \brief This file contains the implementation of the Instance class.
+/// \copyright Copyright (c) 2020 Abdalla Jama under the MIT License. See
+/// accompanying file LICENSE or copy at https://opensource.org/licenses/MIT
 //
 //===----------------------------------------------------------------------===//
 #include "Instance.h"

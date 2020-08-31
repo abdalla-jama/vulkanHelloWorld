@@ -1,8 +1,9 @@
 //===-InstanceUnitTests.cpp-----------------------------------------*- C++ -*-//
 //
-// Part of the vulkanHelloWorld project, under the MIT License.
-// Copyright (c) 2020 Abdalla Jama.
-// This file contains the unit tests for the Instance class.
+/// Part of the vulkanHelloWorldApp.
+/// \brief This file contains the unit tests for the Instance class.
+/// \copyright Copyright (c) 2020 Abdalla Jama under the MIT License. See
+/// accompanying file LICENSE or copy at https://opensource.org/licenses/MIT
 //
 //===----------------------------------------------------------------------===//
 #include <boost/test/unit_test.hpp>
@@ -109,4 +110,9 @@ BOOST_AUTO_TEST_CASE(getInstanceStatus) {
   Instance test_instance;
   BOOST_CHECK_EQUAL(test_instance.getInstanceStatus(),
 					test_instance.instance_status_);
+}
+BOOST_AUTO_TEST_CASE(getAPIVersion) {
+  Instance test_instance;
+  BOOST_CHECK_EQUAL(test_instance.getAPIVersion(),
+					test_instance.app_info_.apiVersion);
 }

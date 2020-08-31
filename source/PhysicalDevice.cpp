@@ -1,8 +1,9 @@
 //===-PhysicalDevice.cpp--------------------------------------------*- C++ -*-//
 //
-// Part of the vulkanHelloWorld project, under the MIT License.
-// Copyright (c) 2020 Abdalla Jama.
-// This file contains the implementation of the PhysicalDevice class.
+/// Part of the vulkanHelloWorldApp.
+/// This file contains the implementation of the PhysicalDevice class.
+/// \copyright Copyright (c) 2020 Abdalla Jama under the MIT License. See
+/// accompanying file LICENSE or copy at https://opensource.org/licenses/MIT
 //
 //===----------------------------------------------------------------------===//
 #include "PhysicalDevice.h"
@@ -46,9 +47,10 @@ VkResult PhysicalDevice::enumeratePhysicalDevices(VkInstance instance) {
   }
   return result_2;
 }
+/// \brief
 void PhysicalDevice::selectPhysicalDevice() {
   for (auto device : device_array_) {
-    if (APIVersionCheck(device) && isGraphicsSupported(device)) {
+    if (APIVersionCheck(device) && getGraphicsQueueFamilyIndex(device)) {
       selected_device_ = device;
     }
   }
@@ -57,21 +59,27 @@ void PhysicalDevice::selectPhysicalDevice() {
 		"No device with version and graphics support is available");
   }
 }
-bool PhysicalDevice::APIVersionCheck(VkPhysicalDevice physical_device) {
+/// \brief APIVersionCheck - Checks if the application specified API version is
+/// less than or equal to the API version of a given device.
+/// \warning No argument checking.
+/// \param physical_device - A valid VkPhysicalDevice handle.
+/// \return bool - True if the device API is equal or greater than the
+/// application, false otherwise.
+bool PhysicalDevice::APIVersionCheck(VkPhysicalDevice physical_device) const {
   VkPhysicalDeviceProperties properties;
   vkGetPhysicalDeviceProperties(physical_device, &properties);
-  uint32_t version = VK_VERSION_MAJOR(properties.apiVersion);
-  if (version < 1) {
-	return false;
-  }
-  return true;
+  return api_version_ <= properties.apiVersion;
 }
-/// \brief isGraphicsSupported - Checks if graphics processing is supported on
-/// any queue family of a given device.
+/// \brief getGraphicsQueueFamilyIndex - Attempts to find graphics processing
+/// support on any queue family of a given device.
 /// \details
-/// \param physical_device
-/// \return
-bool PhysicalDevice::isGraphicsSupported(VkPhysicalDevice physical_device) {
+/// \warning No argument checking.
+/// \param physical_device - A valid VkPhysicalDevice handle.
+/// \return uint32_t - A signed integer with 32 bit width representing an index
+/// to the queue family is returned if the call  is successful, otherwise
+/// -1 is returned.
+uint32_t PhysicalDevice::getGraphicsQueueFamilyIndex(VkPhysicalDevice physical_device) {
+  uint32_t graphics_queue_index = -1;
   uint32_t queue_family_count{0};
   vkGetPhysicalDeviceQueueFamilyProperties(
 	  physical_device,
@@ -88,8 +96,8 @@ bool PhysicalDevice::isGraphicsSupported(VkPhysicalDevice physical_device) {
 	  queue_family_properties.data());
   for (uint32_t i = 0; i < queue_family_count; i++) {
 	if (queue_family_properties[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
-	  return true;
+	  graphics_queue_index = i;
 	}
   }
-  return false;
+  return graphics_queue_index;
 }
