@@ -32,7 +32,7 @@ VkResult PhysicalDevice::enumeratePhysicalDevices(VkInstance instance) {
   	&num_devices,
   	nullptr);
   if (result_1 != VK_SUCCESS) {
-    throw std::runtime_error("Error occurred enumerating physical device");
+    throw std::runtime_error("Error occurred enumerating physical devices");
   }
   if (num_devices == 0) {
     throw std::runtime_error("No devices with vulkan support available");
@@ -43,20 +43,41 @@ VkResult PhysicalDevice::enumeratePhysicalDevices(VkInstance instance) {
   	&num_devices,
   	device_array_.data());
   if (result_2 != VK_SUCCESS) {
-    throw std::runtime_error("Error occurred enumerating physical device");
+    throw std::runtime_error("Error occurred enumerating physical devices");
   }
   return result_2;
 }
-/// \brief
+/// \brief selectPhysicalDevice - Selects a physical device.
+/// \details The function makes a selection based on criteria implemented in private helper functions.
+//TODO finish documenting
 void PhysicalDevice::selectPhysicalDevice() {
+  if (device_array_.empty()) {
+	throw std::runtime_error(
+		"Error cannot select a physical device before they are enumerated");
+  }
   for (auto device : device_array_) {
-    if (APIVersionCheck(device) && getGraphicsQueueFamilyIndex(device)) {
-      selected_device_ = device;
+    if (getGraphicsQueueFamilyIndex(device) >= 0 && APIVersionCheck(device)) {
+	  selected_device_ = device;
     }
   }
   if (selected_device_ == VK_NULL_HANDLE) {
 	throw std::runtime_error(
 		"No device with version and graphics support is available");
+  }
+}
+/// \brief setGraphicsQueueIndex - Sets the graphics queue index variable.
+/// \details The function is set with the private helper function
+/// getGraphicsQueueFamilyIndex. The selected device variable is passed and
+/// returns a signed integer with 32 bit width representing the queue family
+/// index with graphics support. An exception is thrown if no device has been
+/// selected or if graphics support is unavailable.
+void PhysicalDevice::setGraphicsQueueIndex() {
+  if (selected_device_ == VK_NULL_HANDLE) {
+    throw std::runtime_error("No device has been selected");
+  }
+  graphics_queue_index_ = getGraphicsQueueFamilyIndex(selected_device_);
+  if (graphics_queue_index_ == -1) {
+	throw std::runtime_error("No graphics support available");
   }
 }
 /// \brief APIVersionCheck - Checks if the application specified API version is
@@ -72,13 +93,23 @@ bool PhysicalDevice::APIVersionCheck(VkPhysicalDevice physical_device) const {
 }
 /// \brief getGraphicsQueueFamilyIndex - Attempts to find graphics processing
 /// support on any queue family of a given device.
-/// \details
+/// \details - The function initializes the the variable to be returned to -1
+/// and a variable representing the number of queue families to 0.
+/// vkGetPhysicalDeviceQueueFamilyProperties is called twice. The first tine the
+/// last argument passed with nullptr. This has the effect of setting the queue
+/// family variable. If the variable is still 0 an exception is thrown otherwise
+/// the variable is used to initialize the size of a vector of
+/// VkQueueFamilyProperties. This vector is populated through the second call to
+/// vkGetPhysicalDeviceQueueFamilyProperties. The rest of the function loops
+/// through the vector checking for graphics support and returning the first
+/// index value that satisfies the criteria, otherwise -1 is returned.
 /// \warning No argument checking.
 /// \param physical_device - A valid VkPhysicalDevice handle.
-/// \return uint32_t - A signed integer with 32 bit width representing an index
+/// \return int32_t - A signed integer with 32 bit width representing an index
 /// to the queue family is returned if the call  is successful, otherwise
 /// -1 is returned.
-uint32_t PhysicalDevice::getGraphicsQueueFamilyIndex(VkPhysicalDevice physical_device) {
+int32_t PhysicalDevice::getGraphicsQueueFamilyIndex(
+	VkPhysicalDevice physical_device) {
   uint32_t graphics_queue_index = -1;
   uint32_t queue_family_count{0};
   vkGetPhysicalDeviceQueueFamilyProperties(
@@ -97,6 +128,7 @@ uint32_t PhysicalDevice::getGraphicsQueueFamilyIndex(VkPhysicalDevice physical_d
   for (uint32_t i = 0; i < queue_family_count; i++) {
 	if (queue_family_properties[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
 	  graphics_queue_index = i;
+	  return graphics_queue_index;
 	}
   }
   return graphics_queue_index;

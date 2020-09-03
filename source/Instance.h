@@ -36,7 +36,7 @@ class Instance {
   VkResult getInstanceStatus() const {return instance_status_;}
 /// \brief getAPIVersion - Provides vulkan API version being used by the
 /// application.
-/// \return uint32_t - Signed integer with 32 bit width representing the major,
+/// \return uint32_t - Unsigned integer with 32 bit width representing the major,
 /// minor and patch numbers of the vulkan API.
   uint32_t getAPIVersion() const {return app_info_.apiVersion;}
  private:
