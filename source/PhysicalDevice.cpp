@@ -1,6 +1,6 @@
 //===-PhysicalDevice.cpp--------------------------------------------*- C++ -*-//
 //
-/// Part of the vulkanHelloWorldApp.
+/// Part of the Vulkan Hello World App.
 /// This file contains the implementation of the PhysicalDevice class.
 /// \copyright Copyright (c) 2020 Abdalla Jama under the MIT License. See
 /// accompanying file LICENSE or copy at https://opensource.org/licenses/MIT
@@ -22,6 +22,11 @@
 /// function calls do not return VK_SUCCESS a runtime exception is thrown.
 /// \param instance - A valid VkInstance object.
 /// \return VkResult - An enumeration of vulkan command return codes.
+/// \exception std::runtime_error thrown if an invalid VkInstance is passed.
+/// \exception std::runtime_error thrown if either call to
+/// vkEnumeratePhysicalDevices does not return VK_SUCCESS.
+/// \exception std::runtime_error thrown if no physical devices on the system
+/// provide vulkan support.
 VkResult PhysicalDevice::enumeratePhysicalDevices(VkInstance instance) {
   if (instance == VK_NULL_HANDLE) {
     throw std::runtime_error("No valid vulkan instance available!");
@@ -48,68 +53,77 @@ VkResult PhysicalDevice::enumeratePhysicalDevices(VkInstance instance) {
   return result_2;
 }
 /// \brief selectPhysicalDevice - Selects a physical device.
-/// \details The function makes a selection based on criteria implemented in private helper functions.
-//TODO finish documenting
-void PhysicalDevice::selectPhysicalDevice() {
+/// \details Initially the function checks if the vulkan supported devices have
+/// been enumerated and throws an exception if they have not. The function
+/// proceeds to loop through the enumerated devices and select the first device
+/// that satisfies criteria implemented in private helper functions. The helper
+/// functions check for minimum API version support and graphics processing
+/// support. Lastly if no device meets the criteria an exception is thrown.
+/// \exception std::runtime_error thrown if physical devices have not been
+/// enumerated
+/// \exception std::runtime_error thrown if no physical device satisfies
+/// selection criteria.
+void PhysicalDevice::setPrimaryDevice() {
   if (device_array_.empty()) {
 	throw std::runtime_error(
 		"Error cannot select a physical device before they are enumerated");
   }
   for (auto device : device_array_) {
-    if (getGraphicsQueueFamilyIndex(device) >= 0 && APIVersionCheck(device)) {
-	  selected_device_ = device;
+    int32_t index = getGraphicsQueueFamilyIndex(device);
+    if (index >= 0 && APIVersionCheck(device)) {
+	  primary_device_.device_ = device;
+	  primary_device_.graphics_queue_index_ = index;
     }
   }
-  if (selected_device_ == VK_NULL_HANDLE) {
+  if (primary_device_.device_ == VK_NULL_HANDLE) {
 	throw std::runtime_error(
 		"No device with version and graphics support is available");
   }
 }
-/// \brief setGraphicsQueueIndex - Sets the graphics queue index variable.
-/// \details The function is set with the private helper function
-/// getGraphicsQueueFamilyIndex. The selected device variable is passed and
-/// returns a signed integer with 32 bit width representing the queue family
-/// index with graphics support. An exception is thrown if no device has been
-/// selected or if graphics support is unavailable.
-void PhysicalDevice::setGraphicsQueueIndex() {
-  if (selected_device_ == VK_NULL_HANDLE) {
-    throw std::runtime_error("No device has been selected");
-  }
-  graphics_queue_index_ = getGraphicsQueueFamilyIndex(selected_device_);
-  if (graphics_queue_index_ == -1) {
-	throw std::runtime_error("No graphics support available");
-  }
-}
 /// \brief APIVersionCheck - Checks if the application specified API version is
 /// less than or equal to the API version of a given device.
-/// \warning No argument checking.
+/// \details Initially the function null checks the argument and throws an
+/// exception if it fails. The function proceeds to use the
+/// vkGetPhysicalDeviceProperties to query the properties of the given device.
+/// The function checks if the device supported API version is greater than or
+/// equal to the client specified one.
 /// \param physical_device - A valid VkPhysicalDevice handle.
 /// \return bool - True if the device API is equal or greater than the
 /// application, false otherwise.
+/// \exception std::runtime_error thrown if parameter is invalid.
 bool PhysicalDevice::APIVersionCheck(VkPhysicalDevice physical_device) const {
+  if (physical_device == VK_NULL_HANDLE) {
+	throw std::runtime_error("Error no VkPhysicalDevice available");
+  }
   VkPhysicalDeviceProperties properties;
   vkGetPhysicalDeviceProperties(physical_device, &properties);
   return api_version_ <= properties.apiVersion;
 }
 /// \brief getGraphicsQueueFamilyIndex - Attempts to find graphics processing
-/// support on any queue family of a given device.
-/// \details - The function initializes the the variable to be returned to -1
-/// and a variable representing the number of queue families to 0.
-/// vkGetPhysicalDeviceQueueFamilyProperties is called twice. The first tine the
-/// last argument passed with nullptr. This has the effect of setting the queue
-/// family variable. If the variable is still 0 an exception is thrown otherwise
-/// the variable is used to initialize the size of a vector of
+/// support.
+/// \details - Initially the function null checks the argument and throws an
+/// exception if it fails. The function then initializes the the variable to be
+/// returned to -1 and a variable representing the number of queue families to
+/// 0. vkGetPhysicalDeviceQueueFamilyProperties is called twice. The first call
+/// passes nullptr as the last argument. This has the effect of setting the
+/// queue family count variable. If the variable is still 0 an exception is
+/// thrown otherwise the variable is used to initialize the size of a vector of
 /// VkQueueFamilyProperties. This vector is populated through the second call to
 /// vkGetPhysicalDeviceQueueFamilyProperties. The rest of the function loops
 /// through the vector checking for graphics support and returning the first
 /// index value that satisfies the criteria, otherwise -1 is returned.
-/// \warning No argument checking.
 /// \param physical_device - A valid VkPhysicalDevice handle.
 /// \return int32_t - A signed integer with 32 bit width representing an index
 /// to the queue family is returned if the call  is successful, otherwise
 /// -1 is returned.
+/// \exception std::runtime_error thrown if parameter is invalid.
+/// \exception std::runtime_error thrown if the call to
+/// vkGetPhysicalDeviceQueueFamilyProperties fails.
 int32_t PhysicalDevice::getGraphicsQueueFamilyIndex(
 	VkPhysicalDevice physical_device) {
+  if (physical_device == VK_NULL_HANDLE) {
+	throw std::runtime_error("Error no VkPhysicalDevice available");
+  }
   uint32_t graphics_queue_index = -1;
   uint32_t queue_family_count{0};
   vkGetPhysicalDeviceQueueFamilyProperties(

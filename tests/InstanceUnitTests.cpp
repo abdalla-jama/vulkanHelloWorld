@@ -1,6 +1,6 @@
 //===-InstanceUnitTests.cpp-----------------------------------------*- C++ -*-//
 //
-/// Part of the vulkanHelloWorldApp.
+/// Part of the Vulkan Hello World App.
 /// \brief This file contains the unit tests for the Instance class.
 /// \copyright Copyright (c) 2020 Abdalla Jama under the MIT License. See
 /// accompanying file LICENSE or copy at https://opensource.org/licenses/MIT
@@ -13,7 +13,7 @@
 
 BOOST_AUTO_TEST_CASE(setApplicationInfo_noParameters) {
   Instance test_instance;
-  test_instance.setApplicationInfo();
+  test_instance.setApplicationInfo(); /// Target Function Call
   VkApplicationInfo* test_info = &test_instance.app_info_;
   BOOST_CHECK_EQUAL(test_info->sType, VK_STRUCTURE_TYPE_APPLICATION_INFO);
   BOOST_CHECK_EQUAL(test_info->pNext, nullptr);
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(setApplicationInfo_withParameters) {
 	  VK_MAKE_VERSION(2, 0, 0),
 	  VK_API_VERSION_1_0
   };
-  test_instance.setApplicationInfo(&test_info);
+  test_instance.setApplicationInfo(&test_info); /// Target Function Call
   BOOST_CHECK_EQUAL(test_instance.app_info_.sType, test_info.sType);
   BOOST_CHECK_EQUAL(test_instance.app_info_.pNext, test_info.pNext);
   BOOST_CHECK_EQUAL(test_instance.app_info_.pApplicationName,
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(setApplicationInfo_withParameters) {
 }
 BOOST_AUTO_TEST_CASE(setCreateInfo_noParameters) {
   Instance test_instance;
-  test_instance.setCreateInfo();
+  test_instance.setCreateInfo(); /// Target Function Call
   VkInstanceCreateInfo* test_info = &test_instance.create_info_;
   BOOST_CHECK_EQUAL(test_info->sType, VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO);
   BOOST_CHECK_EQUAL(test_info->pNext, nullptr);
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(setCreateInfo_withParameters) {
 	  5,
 	  nullptr
   };
-  test_instance.setCreateInfo(&test_info);
+  test_instance.setCreateInfo(&test_info); /// Target Function Call
   BOOST_CHECK_EQUAL(test_instance.create_info_.sType, test_info.sType);
   BOOST_CHECK_EQUAL(test_instance.create_info_.pNext, test_info.pNext);
   BOOST_CHECK_EQUAL(test_instance.create_info_.flags, test_info.flags);
@@ -92,27 +92,28 @@ BOOST_AUTO_TEST_CASE(setCreateInfo_withParameters) {
 }
 BOOST_AUTO_TEST_CASE(createInstance_validInstance) {
   Instance test_instance;
-  BOOST_CHECK_EQUAL(test_instance.createInstance(), VK_SUCCESS);
+  BOOST_CHECK_EQUAL(test_instance.createInstance(), /// Target Function Call
+					VK_SUCCESS);
 }
 BOOST_AUTO_TEST_CASE(destroyInstance_validInstance) {
   Instance test_instance;
   test_instance.createInstance();
   BOOST_CHECK_EQUAL(test_instance.instance_status_, VK_SUCCESS);
-  test_instance.destroyInstance();
+  test_instance.destroyInstance(); /// Target Function Call
   BOOST_CHECK_EQUAL(test_instance.instance_status_, VK_NOT_READY);
 }
 BOOST_AUTO_TEST_CASE(getVkInstance) {
   Instance test_instance;
-  BOOST_CHECK_EQUAL(*test_instance.getVkInstance(),
+  BOOST_CHECK_EQUAL(*test_instance.getVkInstance(),  /// Target Function Call
 					test_instance.instance_);
 }
 BOOST_AUTO_TEST_CASE(getInstanceStatus) {
   Instance test_instance;
-  BOOST_CHECK_EQUAL(test_instance.getInstanceStatus(),
+  BOOST_CHECK_EQUAL(test_instance.getInstanceStatus(),///Target Function Call
 					test_instance.instance_status_);
 }
 BOOST_AUTO_TEST_CASE(getAPIVersion) {
   Instance test_instance;
-  BOOST_CHECK_EQUAL(test_instance.getAPIVersion(),
+  BOOST_CHECK_EQUAL(test_instance.getAPIVersion(), /// Target Function Call
 					test_instance.app_info_.apiVersion);
 }
