@@ -51,7 +51,6 @@ class PhysicalDevice {
 /// \return int32_t - a signed integer with 32 bit width representing the index.
   int32_t getGraphicsQueueIndex() const
   {return primary_device_.graphics_queue_index_;}
-
  private:
   struct PrimaryDevice {
 	VkPhysicalDevice device_{VK_NULL_HANDLE};

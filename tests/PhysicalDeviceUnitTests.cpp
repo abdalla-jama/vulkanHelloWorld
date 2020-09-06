@@ -44,6 +44,31 @@ BOOST_AUTO_TEST_CASE(setPrimaryDevice_noEnumeration_exceptionThrown) {
   BOOST_CHECK_THROW(test_device.setPrimaryDevice(),
 					std::runtime_error);
 }
+BOOST_AUTO_TEST_CASE(setAPIVersion) {
+  PhysicalDevice test_device;
+  uint32_t test_version = VK_MAKE_VERSION(1,0,0);
+  test_device.setAPIVersion(test_version); /// Target Function Call
+  BOOST_CHECK_EQUAL(test_device.api_version_, test_version);
+}
+BOOST_AUTO_TEST_CASE(getPhysicalDevices) {
+  PhysicalDevice test_device;
+  for (uint32_t i = 0; i < test_device.device_array_.size(); i++) {
+	/// Target Function Call
+	BOOST_CHECK_EQUAL((*test_device.getPhysicalDevices())[i],
+					  test_device.device_array_[i]);
+  }
+}
+BOOST_AUTO_TEST_CASE(getPrimaryDevice) {
+  PhysicalDevice test_device;
+  BOOST_CHECK_EQUAL(*test_device.getPrimaryDevice(), /// Target Function Call
+					test_device.primary_device_.device_);
+}
+BOOST_AUTO_TEST_CASE(getGraphicsQueueIndex) {
+  PhysicalDevice test_device;
+  /// Target Function Call
+  BOOST_CHECK_EQUAL(test_device.getGraphicsQueueIndex(),
+					test_device.primary_device_.graphics_queue_index_);
+}
 BOOST_AUTO_TEST_CASE(APIVersionCheck) {
   Instance test_instance;
   test_instance.createInstance();

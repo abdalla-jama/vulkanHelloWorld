@@ -3,5 +3,7 @@ add_executable(vulkanHelloWorld
         Instance.cpp
         Instance.h
         PhysicalDevice.cpp
-        PhysicalDevice.h)
+        PhysicalDevice.h
+        LogicalDevice.cpp
+        LogicalDevice.h)
 target_link_libraries (vulkanHelloWorld -lvulkan)

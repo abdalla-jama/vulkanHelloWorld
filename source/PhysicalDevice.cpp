@@ -10,23 +10,23 @@
 
 /// \brief enumeratePhysicalDevices - Exposes vulkan supported devices to the
 /// application.
-/// \details The function performs a null check on its argument, throwing a
-/// runtime exception if the check fails. The rest of the function uses the
+/// \details The function begins by performing a null check on its argument and
+/// throwing an exception if the check fails. The rest of the function uses the
 /// analogous Vulkan API function vkEnumeratePhysicalDevices twice, calling it
 /// the first time with a nullptr as the third argument. This call provides the
-/// number of vulkan supported devices, if the number is zero a runtime
-/// exception is thrown. A vector is resized to the number of devices available.
-/// The vkEnumeratePhysicalDevices function is called again with the address of
-/// the first element of the vector as the third argument. Each element in the
+/// number of vulkan supported devices, if the number is zero an exception is
+/// thrown. A vector is resized to the number of devices available. The
+/// vkEnumeratePhysicalDevices function is called again with the address of the
+/// first element of the vector as the third argument. Each element in the
 /// vector is filled with a VkPhysicalDevice object. If either of the API
-/// function calls do not return VK_SUCCESS a runtime exception is thrown.
+/// function calls do not return VK_SUCCESS an exception is thrown.
 /// \param instance - A valid VkInstance object.
 /// \return VkResult - An enumeration of vulkan command return codes.
-/// \exception std::runtime_error thrown if an invalid VkInstance is passed.
+/// \exception std::runtime_error thrown if an invalid VkInstance is passed in.
 /// \exception std::runtime_error thrown if either call to
 /// vkEnumeratePhysicalDevices does not return VK_SUCCESS.
 /// \exception std::runtime_error thrown if no physical devices on the system
-/// provide vulkan support.
+/// provides vulkan support.
 VkResult PhysicalDevice::enumeratePhysicalDevices(VkInstance instance) {
   if (instance == VK_NULL_HANDLE) {
     throw std::runtime_error("No valid vulkan instance available!");
@@ -58,7 +58,9 @@ VkResult PhysicalDevice::enumeratePhysicalDevices(VkInstance instance) {
 /// proceeds to loop through the enumerated devices and select the first device
 /// that satisfies criteria implemented in private helper functions. The helper
 /// functions check for minimum API version support and graphics processing
-/// support. Lastly if no device meets the criteria an exception is thrown.
+/// support. The function sets the members of the primary device struct to the
+/// first device that fulfills the criteria and lastly if no device meets
+/// the criteria an exception is thrown.
 /// \exception std::runtime_error thrown if physical devices have not been
 /// enumerated
 /// \exception std::runtime_error thrown if no physical device satisfies
