@@ -1,8 +1,8 @@
 //===-InstanceUnitTests.cpp-----------------------------------------*- C++ -*-//
 //
 /// Part of the Vulkan Hello World App.
-/// \brief This file contains the unit tests for the Instance class.
-/// \copyright Copyright (c) 2020 Abdalla Jama under the MIT License. See
+/// This file contains the unit tests for the Instance class.
+/// Copyright (c) 2020 Abdalla Jama under the MIT License. See
 /// accompanying file LICENSE or copy at https://opensource.org/licenses/MIT
 //
 //===----------------------------------------------------------------------===//
