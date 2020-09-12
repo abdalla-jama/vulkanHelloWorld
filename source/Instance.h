@@ -11,19 +11,23 @@
 #include <vulkan/vulkan.h>
 #include <stdexcept>
 
+namespace vk {
 class Instance {
  public:
-  void setApplicationInfo(VkApplicationInfo* vk = nullptr);
-  void setCreateInfo(VkInstanceCreateInfo* vk = nullptr);
-  VkResult createInstance();
-  void destroyInstance();
-  const VkInstance* getVkInstance() const {return &instance_;}
-  VkResult getInstanceStatus() const {return instance_status_;}
-  uint32_t getAPIVersion() const {return app_info_.apiVersion;}
+  Instance();
+  ~Instance();
+  VkResult create();
+  void destroy();
+  void setApplicationInfo(VkApplicationInfo &vai) { app_info_ = vai; }
+  void setCreateInfo(VkInstanceCreateInfo &vici) { create_info_ = vici; }
+  uint32_t getAPIVersion() const { return app_info_.apiVersion; }
+  VkInstance operator*() { return instance_; }
+  bool isInstanceValid() const {return valid_;}
  private:
   VkApplicationInfo app_info_{};
   VkInstanceCreateInfo create_info_{};
   VkInstance instance_{VK_NULL_HANDLE};
-  VkResult instance_status_{VK_NOT_READY};
+  bool valid_{false};
 };
+}
 #endif //VULKAN_HELLO_WORLD_APP_SOURCE_INSTANCE_H_

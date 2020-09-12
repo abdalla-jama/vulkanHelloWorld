@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 #include "PhysicalDevice.h"
 
-VkResult PhysicalDevice::enumeratePhysicalDevices(VkInstance instance) {
+VkResult vk::PhysicalDevice::enumeratePhysicalDevices(VkInstance instance) {
   if (instance == VK_NULL_HANDLE) {
     throw std::runtime_error("No valid vulkan instance available!");
   }
@@ -33,7 +33,7 @@ VkResult PhysicalDevice::enumeratePhysicalDevices(VkInstance instance) {
   }
   return result_2;
 }
-void PhysicalDevice::setPrimaryDevice() {
+void vk::PhysicalDevice::setPrimaryDevice() {
   if (device_array_.empty()) {
 	throw std::runtime_error(
 		"Error cannot select a physical device before they are enumerated");
@@ -50,7 +50,7 @@ void PhysicalDevice::setPrimaryDevice() {
 		"No device with version and graphics support is available");
   }
 }
-bool PhysicalDevice::APIVersionCheck(VkPhysicalDevice physical_device) const {
+bool vk::PhysicalDevice::APIVersionCheck(VkPhysicalDevice physical_device) const {
   if (physical_device == VK_NULL_HANDLE) {
 	throw std::runtime_error("Error no VkPhysicalDevice available");
   }
@@ -59,7 +59,7 @@ bool PhysicalDevice::APIVersionCheck(VkPhysicalDevice physical_device) const {
   return api_version_ <= properties.apiVersion;
 }
 // TODO refactor function to throw exception instead of returning error code and use uint32_t instead of int32_t
-int32_t PhysicalDevice::getGraphicsQueueFamilyIndex(
+int32_t vk::PhysicalDevice::getGraphicsQueueFamilyIndex(
 	VkPhysicalDevice physical_device) {
   if (physical_device == VK_NULL_HANDLE) {
 	throw std::runtime_error("Error no VkPhysicalDevice available");

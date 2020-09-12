@@ -11,18 +11,20 @@
 #include <vulkan/vulkan.h>
 #include <stdexcept>
 #include <vector>
-
+//TODO implement operator overloading for accessing device array
+namespace vk {
 class PhysicalDevice {
  public:
   VkResult enumeratePhysicalDevices(VkInstance instance);
   void setPrimaryDevice();
-  void setAPIVersion(uint32_t version) { api_version_ = version;}
-  const std::vector<VkPhysicalDevice>* getPhysicalDevices() const
-  {return &device_array_;}
-  const VkPhysicalDevice* getPrimaryDevice() const
-  {return &primary_device_.device_;}
-  int32_t getGraphicsQueueIndex() const
-  {return primary_device_.graphics_queue_index_;}
+  void setAPIVersion(uint32_t version) { api_version_ = version; }
+  const std::vector<VkPhysicalDevice> *getPhysicalDevices() const { return &device_array_; }
+  const VkPhysicalDevice *getPrimaryDevice() const {
+	return &primary_device_.device_;
+  }
+  int32_t getGraphicsQueueIndex() const {
+	return primary_device_.graphics_queue_index_;
+  }
  private:
   struct PrimaryDevice {
 	VkPhysicalDevice device_{VK_NULL_HANDLE};
@@ -33,4 +35,5 @@ class PhysicalDevice {
   bool APIVersionCheck(VkPhysicalDevice physical_device) const;
   int32_t getGraphicsQueueFamilyIndex(VkPhysicalDevice physical_device);
 };
+}
 #endif //VULKAN_HELLO_WORLD_APP_SOURCE_PHYSICALDEVICE_H_

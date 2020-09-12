@@ -11,6 +11,36 @@
 #define private public
 #include "../source/Instance.h"
 
+BOOST_AUTO_TEST_CASE(constructor) {
+  vk::Instance instance;
+  VkApplicationInfo app_info = instance.app_info_;
+  BOOST_CHECK_EQUAL(app_info.sType, VK_STRUCTURE_TYPE_APPLICATION_INFO);
+  BOOST_CHECK_EQUAL(app_info.pNext, nullptr);
+  BOOST_CHECK_EQUAL(app_info.pApplicationName, "");
+  BOOST_CHECK_EQUAL(app_info.applicationVersion,
+					VK_MAKE_VERSION(1, 0, 0));
+  BOOST_CHECK_EQUAL(app_info.pEngineName, "");
+  BOOST_CHECK_EQUAL(app_info.engineVersion,
+					VK_MAKE_VERSION(1, 0, 0));
+  BOOST_CHECK_EQUAL(app_info.apiVersion, VK_API_VERSION_1_0);
+  VkInstanceCreateInfo create_info = instance.create_info_;
+  BOOST_CHECK_EQUAL(create_info.sType,
+					VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO);
+  BOOST_CHECK_EQUAL(create_info.pNext, nullptr);
+  BOOST_CHECK_EQUAL(create_info.flags, 0);
+  BOOST_CHECK_EQUAL(create_info.pApplicationInfo, &instance.app_info_);
+  BOOST_CHECK_EQUAL(create_info.enabledLayerCount, 0);
+  BOOST_CHECK_EQUAL(create_info.ppEnabledLayerNames, nullptr);
+  BOOST_CHECK_EQUAL(create_info.enabledExtensionCount, 0);
+  BOOST_CHECK_EQUAL(create_info.ppEnabledExtensionNames, nullptr);
+}
+BOOST_AUTO_TEST_CASE(operatorDereference_validVkInstance) {
+  vk::Instance instance;
+  instance.create();
+  VkInstance v = *instance;
+  BOOST_CHECK_EQUAL(v,instance.instance_);
+}
+/*
 BOOST_AUTO_TEST_CASE(setApplicationInfo_noParameters) {
   Instance test_instance;
   test_instance.setApplicationInfo(); /// Target Function Call
@@ -92,14 +122,14 @@ BOOST_AUTO_TEST_CASE(setCreateInfo_withParameters) {
 }
 BOOST_AUTO_TEST_CASE(createInstance_validInstance) {
   Instance test_instance;
-  BOOST_CHECK_EQUAL(test_instance.createInstance(), /// Target Function Call
+  BOOST_CHECK_EQUAL(test_instance.create(), /// Target Function Call
 					VK_SUCCESS);
 }
 BOOST_AUTO_TEST_CASE(destroyInstance_validInstance) {
   Instance test_instance;
-  test_instance.createInstance();
+  test_instance.create();
   BOOST_CHECK_EQUAL(test_instance.instance_status_, VK_SUCCESS);
-  test_instance.destroyInstance(); /// Target Function Call
+  test_instance.destroy(); /// Target Function Call
   BOOST_CHECK_EQUAL(test_instance.instance_status_, VK_NOT_READY);
 }
 BOOST_AUTO_TEST_CASE(getVkInstance) {
@@ -117,3 +147,4 @@ BOOST_AUTO_TEST_CASE(getAPIVersion) {
   BOOST_CHECK_EQUAL(test_instance.getAPIVersion(), /// Target Function Call
 					test_instance.app_info_.apiVersion);
 }
+*/
