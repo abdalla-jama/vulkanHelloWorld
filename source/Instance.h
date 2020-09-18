@@ -18,8 +18,8 @@ class Instance {
   ~Instance();
   VkResult create();
   void destroy();
-  void setApplicationInfo(VkApplicationInfo &vai) { app_info_ = vai; }
-  void setCreateInfo(VkInstanceCreateInfo &vici) { create_info_ = vici; }
+  void setApplicationInfo(const VkApplicationInfo &vai) { app_info_ = vai; }
+  void setCreateInfo(const VkInstanceCreateInfo &vici) { create_info_ = vici; }
   uint32_t getAPIVersion() const { return app_info_.apiVersion; }
   VkInstance operator*() { return instance_; }
   bool isInstanceValid() const {return valid_;}

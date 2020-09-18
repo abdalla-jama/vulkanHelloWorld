@@ -18,7 +18,9 @@ class PhysicalDevice {
   VkResult enumeratePhysicalDevices(VkInstance instance);
   void setPrimaryDevice();
   void setAPIVersion(uint32_t version) { api_version_ = version; }
-  const std::vector<VkPhysicalDevice> *getPhysicalDevices() const { return &device_array_; }
+  const std::vector<VkPhysicalDevice> *getPhysicalDevices() const {
+    return &device_array_;
+  }
   const VkPhysicalDevice *getPrimaryDevice() const {
 	return &primary_device_.device_;
   }
